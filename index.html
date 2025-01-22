@@ -15,6 +15,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
         .matrix-background {
             position: absolute;
@@ -33,31 +34,57 @@
             max-width: 600px;
             text-align: left;
             color: #00FF00;
-            display: flex;
+            display: none; /* Initially hidden */
             flex-direction: column;
             align-items: center;
+            position: relative;
         }
         h1 {
             font-size: 2.5em;
             margin-bottom: 20px;
         }
         .field {
-            margin: 8px 0;
+            margin: 10px 0;
             font-size: 1.1em;
         }
         .label {
             font-weight: bold;
         }
         .time {
-            margin-top: 20px;
-            font-size: 1.2em;
+            margin-top: 8px; /* Moved the time up by reducing margin-top */
+            font-size: 1.5em;
             color: #FFFF00; 
             font-weight: bold;
+        }
+        .footer-text {
+            position: absolute;
+            bottom: 5px;
+            left: 10px;
+            font-size: 0.8em;
+            color: #00FF00;
+        }
+        /* Center the welcome screen */
+        .welcome-screen {
+            color: #00FF00;
+            font-size: 2em;
+            cursor: pointer;
+            text-align: center;
+            position: absolute;
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust to truly center the element */
         }
     </style>
 </head>
 <body>
     <canvas id="matrix" class="matrix-background"></canvas>
+
+    <!-- Welcome Screen (Initial Screen) -->
+    <div class="welcome-screen" onclick="showInfo()">
+        Welcome! Click to see more about me.
+    </div>
+
+    <!-- Info Container (Hidden initially) -->
     <div class="container">
         <h1>Who Am I?</h1>
 
@@ -73,7 +100,13 @@
         <div class="field"><span class="label">Hobbies:</span> Gaming, Coding</div>
         <div class="field"><span class="label">Favorite Game:</span> CS2, Apex Legends, Dota 2</div>
         <div class="time" id="current-time"></div>
+
+        <!-- Footer Text inside the container -->
+        <div class="footer-text">
+            DM me in discord to order a similar website about you.
+        </div>
     </div>
+
     <script>
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
@@ -83,6 +116,7 @@
         const fontSize = 16;
         const columns = canvas.width / fontSize;  
         const drops = Array(columns).fill(1);  
+
         function drawMatrix() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);  
@@ -99,6 +133,7 @@
             }
         }
         setInterval(drawMatrix, 35);  
+
         function updateTime() {
             const currentDate = new Date();
             const hours = currentDate.getHours().toString().padStart(2, '0');
@@ -108,6 +143,15 @@
             document.getElementById('current-time').innerText = `My Current Time: ${timeString}`;
         }
         setInterval(updateTime, 1000);  
+
+        // Function to show info after clicking the welcome message
+        function showInfo() {
+            // Hide the welcome screen
+            document.querySelector('.welcome-screen').style.display = 'none';
+            // Show the container with information about you
+            const container = document.querySelector('.container');
+            container.style.display = 'flex';  // Change from `display: none` to `display: flex`
+        }
     </script>
 </body>
 </html>
